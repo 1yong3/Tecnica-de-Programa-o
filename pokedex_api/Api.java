@@ -5,21 +5,15 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
 public class Api {
-
-    // Lista que armazena os Pokemons favoritos
     private static ArrayList<String> favoritos = new ArrayList<>();
-
-
-    // ==========================================
-    // BUSCAR POKEMON
-    // ==========================================
 
     public static void buscarPokemon(String pokemon) {
 
         try {
 
             String url =
-                    "https://pokeapi.co/api/v2/pokemon/" + pokemon.toLowerCase();
+                    "https://pokeapi.co/api/v2/pokemon/"
+                            + pokemon.toLowerCase();
 
             HttpClient client = HttpClient.newHttpClient();
 
@@ -36,13 +30,11 @@ public class Api {
             if (response.statusCode() != 200) {
 
                 System.out.println("Pokemon nao encontrado!");
-
                 return;
             }
 
             String json = response.body();
 
-            // Informacoes do Pokemon
             String nome = pegarNomePrincipal(json);
             String altura = pegarNumero(json, "\"height\":");
             String peso = pegarNumero(json, "\"weight\":");
@@ -63,11 +55,6 @@ public class Api {
             System.out.println("Erro ao acessar a API.");
         }
     }
-
-
-    // ==========================================
-    // LISTAR POKEMONS DA API
-    // ==========================================
 
     public static void listarPokemons() {
 
@@ -116,16 +103,10 @@ public class Api {
         }
     }
 
-
-    // ==========================================
-    // CREATE - ADICIONAR FAVORITO
-    // ==========================================
-
     public static void adicionarFavorito(String pokemon) {
 
         try {
 
-            // Verifica se o Pokemon existe na API
             String url =
                     "https://pokeapi.co/api/v2/pokemon/"
                             + pokemon.toLowerCase();
@@ -145,11 +126,9 @@ public class Api {
             if (response.statusCode() != 200) {
 
                 System.out.println("Pokemon nao encontrado!");
-
                 return;
             }
 
-            // Evita Pokemon repetido
             if (favoritos.contains(pokemon.toLowerCase())) {
 
                 System.out.println(
@@ -171,11 +150,6 @@ public class Api {
         }
     }
 
-
-    // ==========================================
-    // READ - LISTAR FAVORITOS
-    // ==========================================
-
     public static void listarFavoritos() {
 
         System.out.println();
@@ -191,19 +165,66 @@ public class Api {
 
             for (int i = 0; i < favoritos.size(); i++) {
 
-                System.out.println(
-                        (i + 1) + " - " + favoritos.get(i)
-                );
+                String pokemon = favoritos.get(i);
+
+                try {
+
+                    String url =
+                            "https://pokeapi.co/api/v2/pokemon/"
+                                    + pokemon.toLowerCase();
+
+                    HttpClient client = HttpClient.newHttpClient();
+
+                    HttpRequest request = HttpRequest.newBuilder()
+                            .uri(URI.create(url))
+                            .GET()
+                            .build();
+
+                    HttpResponse<String> response = client.send(
+                            request,
+                            HttpResponse.BodyHandlers.ofString()
+                    );
+
+                    if (response.statusCode() == 200) {
+
+                        String json = response.body();
+
+                        // 3 informacoes do Pokemon
+                        String nome = pegarNomePrincipal(json);
+                        String altura = pegarNumero(json, "\"height\":");
+                        String peso = pegarNumero(json, "\"weight\":");
+
+                        System.out.println();
+                        System.out.println(
+                                (i + 1) + " - Pokemon"
+                        );
+                        System.out.println("Nome:   " + nome);
+                        System.out.println("Altura: " + altura);
+                        System.out.println("Peso:   " + peso);
+
+                    } else {
+
+                        System.out.println();
+                        System.out.println(
+                                (i + 1)
+                                        + " - Pokemon nao encontrado!"
+                        );
+                    }
+
+                } catch (Exception e) {
+
+                    System.out.println();
+                    System.out.println(
+                            "Erro ao buscar dados do Pokemon: "
+                                    + pokemon
+                    );
+                }
             }
         }
 
+        System.out.println();
         System.out.println("================================");
     }
-
-
-    // ==========================================
-    // UPDATE - EDITAR FAVORITO
-    // ==========================================
 
     public static void editarFavorito(
             int indice,
@@ -212,7 +233,6 @@ public class Api {
 
         try {
 
-            // Verifica se o indice existe
             if (indice < 1 || indice > favoritos.size()) {
 
                 System.out.println(
@@ -222,7 +242,6 @@ public class Api {
                 return;
             }
 
-            // Verifica se o novo Pokemon existe na API
             String url =
                     "https://pokeapi.co/api/v2/pokemon/"
                             + novoPokemon.toLowerCase();
@@ -248,7 +267,6 @@ public class Api {
                 return;
             }
 
-            // Evita duplicacao
             if (favoritos.contains(novoPokemon.toLowerCase())) {
 
                 System.out.println(
@@ -280,11 +298,6 @@ public class Api {
         }
     }
 
-
-    // ==========================================
-    // DELETE - DELETAR FAVORITO
-    // ==========================================
-
     public static void deletarFavorito(int indice) {
 
         if (indice < 1 || indice > favoritos.size()) {
@@ -305,20 +318,7 @@ public class Api {
         System.out.println("================================");
     }
 
-
-    // ==========================================
-    // PEGAR NOME PRINCIPAL
-    // ==========================================
-
     public static String pegarNomePrincipal(String json) {
-
-        /*
-         * Procuramos o trecho:
-         *
-         * "base_experience":62,
-         * ...
-         * "name":"charmander"
-         */
 
         int posicaoBase =
                 json.indexOf("\"base_experience\":");
@@ -347,11 +347,7 @@ public class Api {
         );
     }
 
-
-    // ==========================================
-    // PEGAR NUMEROS DO JSON
-    // ==========================================
-
+//api
     public static String pegarNumero(
             String json,
             String campo
@@ -381,3 +377,4 @@ public class Api {
         ).trim();
     }
 }
+
