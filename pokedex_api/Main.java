@@ -16,6 +16,10 @@ public class Main {
             System.out.println("================================");
             System.out.println("1 - Listar Pokemons");
             System.out.println("2 - Ver detalhes do Pokemon");
+            System.out.println("3 - Adicionar Pokemon favorito");
+            System.out.println("4 - Listar Pokemon favorito");
+            System.out.println("5 - Editar Pokemon favorito");
+            System.out.println("6 - Deletar Pokemon favorito");
             System.out.println("0 - Sair");
             System.out.println("================================");
             System.out.print("Escolha: ");
@@ -40,6 +44,60 @@ public class Main {
                     String pokemon = scanner.nextLine();
 
                     Api.buscarPokemon(pokemon);
+
+                    break;
+
+                case 3:
+
+                    System.out.print(
+                            "Digite o nome ou numero do Pokemon favorito: "
+                    );
+
+                    String favorito = scanner.nextLine();
+
+                    Api.adicionarFavorito(favorito);
+
+                    break;
+
+                case 4:
+
+                    Api.listarFavoritos();
+
+                    break;
+
+                case 5:
+
+                    Api.listarFavoritos();
+
+                    System.out.print(
+                            "Digite o numero do favorito que deseja editar: "
+                    );
+
+                    int indiceEditar = scanner.nextInt();
+                    scanner.nextLine();
+
+                    System.out.print(
+                            "Digite o novo Pokemon favorito: "
+                    );
+
+                    String novoPokemon = scanner.nextLine();
+
+                    Api.editarFavorito(indiceEditar, novoPokemon);
+
+                    break;
+
+                case 6:
+
+                    Api.listarFavoritos();
+
+                    System.out.print(
+                            "Digite o numero do favorito que deseja deletar: "
+                    );
+
+                    int indiceDeletar = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Api.deletarFavorito(indiceDeletar);
 
                     break;
 
