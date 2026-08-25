@@ -35,6 +35,7 @@ public class Main {
 
                     break;
 
+
                 case 2:
 
                     System.out.print(
@@ -46,6 +47,7 @@ public class Main {
                     Api.buscarPokemon(pokemon);
 
                     break;
+
 
                 case 3:
 
@@ -59,15 +61,21 @@ public class Main {
 
                     break;
 
+
                 case 4:
 
                     Api.listarFavoritos();
 
                     break;
 
+
                 case 5:
 
                     Api.listarFavoritos();
+
+                    if (favoritosVazio()) {
+                        break;
+                    }
 
                     System.out.print(
                             "Digite o numero do favorito que deseja editar: "
@@ -82,13 +90,21 @@ public class Main {
 
                     String novoPokemon = scanner.nextLine();
 
-                    Api.editarFavorito(indiceEditar, novoPokemon);
+                    Api.editarFavorito(
+                            indiceEditar,
+                            novoPokemon
+                    );
 
                     break;
+
 
                 case 6:
 
                     Api.listarFavoritos();
+
+                    if (favoritosVazio()) {
+                        break;
+                    }
 
                     System.out.print(
                             "Digite o numero do favorito que deseja deletar: "
@@ -101,20 +117,26 @@ public class Main {
 
                     break;
 
+
                 case 0:
 
                     System.out.println("Programa encerrado!");
 
                     break;
 
+
                 default:
 
                     System.out.println("Opcao invalida!");
-
             }
 
         } while (opcao != 0);
 
         scanner.close();
+    }
+
+    private static boolean favoritosVazio() {
+
+        return false;
     }
 }
